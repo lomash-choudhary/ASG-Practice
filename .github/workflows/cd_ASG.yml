@@ -1,0 +1,23 @@
+name: "Deploy to ASG machines"
+on:
+    push:
+        branches: [ main ]
+
+jobs:
+    pushNewCodeToASG:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Configure AWS Creds
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ secrets.AWS_ASG_REGION }}
+            
+            - name: Trigger ASG Refresh
+              run : |
+                aws autoscaling start-instance-refresh \
+                --auto-scaling-group-name ${{ secrets.ASG_GRP_NAME }} \
+                --strategy Rolling \
+                --preferences MinHealthyPercentage=${{ secrets.MinHealthyPercentage }},InstanceWarmup=${{ secrets.InstanceWarmup }}
+              

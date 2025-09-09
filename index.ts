@@ -9,7 +9,7 @@ const port = 3000;
 
 app.get("/serverHealthCheck", (req, res) => {
   res.status(200).json({
-    message: `Server is running fine and this is the v1 of the app.`
+    message: `Server is running fine and this is the v2 new new new  of the app.`
   })
 })
 
