@@ -7,6 +7,12 @@ app.use(express.json());
 
 const port = 3000;
 
+app.get("/serverHealthCheck", (req, res) => {
+  res.status(200).json({
+    message: `Server is running fine and this is the v1 of the app.`
+  })
+})
+
 app.get("/getUserData", async (req, res) => {
   try {
     const data = await userModal.find({});
